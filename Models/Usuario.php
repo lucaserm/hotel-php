@@ -13,7 +13,7 @@ class Usuario
     // Remove caracteres não numéricos
     $tel = preg_replace('/[^0-9]/', '', $tel);
     // Formata o número de telefone
-    return $tel = '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 4) . '-' . substr($tel, 6, 4);
+    return $tel = '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 5) . '-' . substr($tel, 7, 4);
   }
   public function nomeCompleto($nome, $sobrenome)
   {

@@ -22,7 +22,7 @@
     <p class="lead">Bem-vindo ao nosso sistema de reserva de quartos.</p>
     <hr class="my-4">
     <p>Aqui você pode encontrar a melhor acomodação para a sua estadia.</p>
-    <a class="btn btn-primary btn-lg" href="#" role="button">Faça uma Reserva</a>
+    <a class="btn btn-primary btn-lg" href="cria_reserva.php" role="button">Faça uma Reserva</a>
   </div>
 </div>
 
