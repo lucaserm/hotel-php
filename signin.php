@@ -29,6 +29,7 @@ if (isset($_SESSION['password_error'])) {
 <?php include('components/navbar.php'); ?>
 <div class="container mt-3">
   <h1 class="text-center">Registre-se no Openlab Hotel</h1>
+  <br>
   <div class="card">
     <div class="card-body">
       <form method="POST" action="includes/register.php">

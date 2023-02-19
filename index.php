@@ -1,5 +1,17 @@
 <?php
   session_start();
+  if(isset($_SESSION['id_usuario'])){
+    include_once("includes/conexao.php");
+    // Obtém os dados do usuário a partir do seu ID
+    $id = $_SESSION["id_usuario"];
+    $sql = "SELECT * FROM clientes WHERE id = $id";
+    $resultado = $conn->query($sql);
+    if (!$resultado || $resultado->num_rows == 0) {
+        echo "Erro ao obter dados do usuário";
+        exit();
+    }
+    $usuario = $resultado->fetch_assoc();
+  }
 ?>
 
 <?php include('components/navbar.php'); ?>

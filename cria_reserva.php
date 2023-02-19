@@ -18,7 +18,7 @@ if (!$resultado || $resultado->num_rows == 0) {
     echo "Erro ao obter dados do usuário";
     exit();
 }
-$cliente = $resultado->fetch_assoc();
+$usuario = $resultado->fetch_assoc();
 
 //Verifica se o formulário foi enviado
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $preco_total = $num_noites * $preco_noite;
 
     //Insere a reserva no banco de dados
-    $id_cliente = $cliente['id'];
+    $id_cliente = $usuario['id'];
     $sql = "INSERT INTO reservas (id, id_cliente, id_quarto, data_chegada, data_saida, num_hospedes, preco_total) VALUES
     (default, '$id_cliente', '$id_quarto', '$data_chegada', '$data_saida', '$num_hospedes', '$preco_total')";
     if ($conn->query($sql) === TRUE) {
