@@ -1,7 +1,7 @@
 <?php
 
 // Inclui a conexão com o banco de dados
-include_once("conexao.php");
+include_once("includes/conexao.php");
 
 // Verifica se o usuário está autenticado
 session_start();
@@ -67,62 +67,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   exit();
 }
 ?>
-<!DOCTYPE html>
-<html>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Reservas - Hotel XYZ</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-    integrity="sha512-3uDhfj3oM3Dud+ysN2+se+EYMHt3qJExTnIg9hej/KAHnbhxkEOlN8zjfZezm/vrYzFmHKTlkfejG9GP/gMkg=="
-    crossorigin="anonymous" />
-</head>
-
-<body>
-  <?php include('components/navbar.php'); ?>
-  <div class="container mt-3">
-    <h1 class="text-center mb-5">Cadastro de Reservas</h1>
-    <form action="processa_reserva.php" method="POST">
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="data_entrada">Data de Entrada:</label>
-          <input type="date" class="form-control" name="data_chegada" required>
-        </div>
-
-        <div class="form-group col-md-6">
-          <label for="data_saida">Data de Saída:</label>
-          <input type="date" class="form-control" name="data_saida" required>
-        </div>
+<?php include('components/navbar.php'); ?>
+<div class="container mt-3">
+  <h1 class="text-center mb-5">Cadastro de Reservas</h1>
+  <form action="processa_reserva.php" method="POST">
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="data_entrada">Data de Entrada:</label>
+        <input type="date" class="form-control" name="data_chegada" required>
       </div>
 
-      <div class="form-group">
-        <label for="quarto">Número do Quarto:</label>
-        <input type="number" class="form-control" name="numero_quarto" required>
+      <div class="form-group col-md-6">
+        <label for="data_saida">Data de Saída:</label>
+        <input type="date" class="form-control" name="data_saida" required>
       </div>
+    </div>
 
-      <div class="form-group">
-        <label for="num_hospedes">Número de hóspedes:</label>
-        <input class="form-control" type="number" id="num_hospedes" name="num_hospedes" min="1" max="4" required>
-      </div>
+    <div class="form-group">
+      <label for="quarto">Número do Quarto:</label>
+      <input type="number" class="form-control" name="numero_quarto" required>
+    </div>
 
-      <div class="form-group">
-        <label for="quarto">Número do Quarto:</label>
-        <select class="form-control" id="tipo_quarto" name="tipo_quarto" required>
-          <option value="standard">Standard</option>
-          <option value="deluxe">Deluxe</option>
-          <option value="suite">Suíte</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label for="num_hospedes">Número de hóspedes:</label>
+      <input class="form-control" type="number" id="num_hospedes" name="num_hospedes" min="1" max="4" required>
+    </div>
 
-      <button type="submit" class="btn btn-primary">Cadastrar</button>
-    </form>
-  </div>
-  <br>
-</body>
+    <div class="form-group">
+      <label for="quarto">Número do Quarto:</label>
+      <select class="form-control" id="tipo_quarto" name="tipo_quarto" required>
+        <option value="standard">Standard</option>
+        <option value="deluxe">Deluxe</option>
+        <option value="suite">Suíte</option>
+      </select>
+    </div>
 
-</html>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+  </form>
+</div>
+<?php include('components/footer.php'); ?>

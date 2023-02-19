@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["nome_usuario"] = $row["nome"];
 
         // Redireciona para a página de destino do sistema
-        header("Location: index.php");
+        header("Location: ../index.php");
         exit();
     } else {
         // As informações de login estão incorretas, exibe mensagem de erro
