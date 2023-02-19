@@ -19,12 +19,18 @@ class Usuario
   {
     return $nome = $nome . " " . $sobrenome;
   }
+  public function criptografia($senha)
+  {
+    $senha = hash('sha256', $senha);
+    return substr($senha, 0, 25);
+  }
 
   public function setUsuario($nome, $sobrenome, $tel, $email, $senha, $conn)
   {
     $tel = $this->trataTel($tel);
     $nome = $this->nomeCompleto($nome, $sobrenome);
-
+    $senha = $this->criptografia($senha);
+    
     // Inserindo novo cliente no banco
     $sql = "INSERT INTO clientes VALUES (default, '$nome', '$email', '$senha', '$tel')";
     $resultado = $conn->query($sql);
@@ -46,7 +52,7 @@ class Usuario
 
   public function getUsuario($email, $senha, $conn)
   {
-
+    $senha = $this->criptografia($senha);
     // Consulta o banco de dados para verificar as informações de login
     $sql = "SELECT id, nome FROM clientes WHERE email = '$email' AND senha = '$senha'";
     $resultado = $conn->query($sql);
@@ -61,7 +67,7 @@ class Usuario
       header("Location: ../index.php");
     } else {
       // As informações de login estão incorretas, exibe mensagem de erro
-      $_SESSION['error'] = "Nome de usuário ou senha incorretos.";
+      $_SESSION['error'] = "Usuário e/ou senha incorretos.";
       header("Location: ../login.php");
     }
   }

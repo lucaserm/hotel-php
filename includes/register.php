@@ -1,6 +1,7 @@
 <?php
 // Conecta ao banco de dados
 include "conexao.php";
+include '../Models/Usuario.php';
 
 session_start(); // Inicia a sessão
 

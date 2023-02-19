@@ -1,6 +1,6 @@
 <?php
 // Inclui a conexão com o banco de dados
-include_once("conexao.php");
+include_once("includes/conexao.php");
 
 // Verifica se o usuário está autenticado
 session_start();
@@ -14,7 +14,7 @@ $id = $_GET["id"];
 $sql = "DELETE FROM reservas WHERE id = $id";
 $resultado = $conn->query($sql);
 
-header("Location: index.php");
+header("Location: busca_reserva.php");
 exit();
 
 ?>

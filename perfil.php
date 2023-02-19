@@ -74,7 +74,7 @@ $usuario = $resultado->fetch_assoc();
       <div class="tab-pane fade" id="v-pills-edit-profile" role="tabpanel" aria-labelledby="v-pills-edit-profile-tab">
         <div class="card">
           <div class="card-header">
-            <h3 class="text-center">Perfil do Usuário</h3>
+            <h3 class="text-center">Editar perfil</h3>
           </div>
           <div class="card-body">
             <form action="atualiza_usuario.php" method="POST">
@@ -99,14 +99,14 @@ $usuario = $resultado->fetch_assoc();
       <div class="tab-pane fade" id="v-pills-edit-password" role="tabpanel" aria-labelledby="v-pills-edit-password-tab">
         <div class="card">
           <div class="card-header">
-            <h3 class="text-center">Perfil do Usuário</h3>
+            <h3 class="text-center">Editar senha</h3>
           </div>
           <div class="card-body">
             <form action="atualiza_usuario.php" method="POST">
               <div class="form-group">
                 <label for="prev_password">Senha Antiga:</label>
                 <input type="text" class="form-control" id="prev_password" name="prev_password"
-                  placeholder="Insira sua senha Atual">
+                  placeholder="Insira sua senha atual">
               </div>
               <div class=" form-group">
                 <label for="new_password">Nova senha:</label>
