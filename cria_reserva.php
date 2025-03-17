@@ -39,53 +39,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $tipo_quarto = $_POST["tipo_quarto"];
   $numero_quarto = $_POST["numero_quarto"];
 
-  //Verifica se o quarto está disponível
-  $sql = "SELECT quartos.id, preco 
-          FROM quartos, reservas
-          WHERE numero = '$numero_quarto'
-          AND id_quarto = quartos.id
-          AND (
-            (data_chegada <= '$data_chegada' AND data_saida >= '$data_chegada') 
-            OR 
-            (data_chegada <= '$data_saida' AND data_saida >= '$data_saida')
-          )";
+  $sql = "SELECT id, preco FROM quartos 
+        WHERE numero = ? 
+        AND id NOT IN (SELECT id_quarto FROM reservas 
+                       WHERE (data_chegada < ? AND data_saida > ?))";
 
-  $result = $conn->query($sql);
-  if ($result -> num_rows > 0) {
-    //Calcula o preço total da reserva
-    $row = $result->fetch_assoc();
-    $id_quarto = $row["id"];
-    $preco_noite = $row["preco"];
-    $data_chegada_obj = new DateTime($data_chegada);
-    $data_saida_obj = new DateTime($data_saida);
-    $intervalo = $data_chegada_obj->diff($data_saida_obj);
-    $num_noites = $intervalo->format("%a");
-    $preco_total = $num_noites * $preco_noite;
 
-    //Insere a reserva no banco de dados
-    $id_cliente = $usuario['id'];
-    $sql = "INSERT INTO reservas (id, id_cliente, id_quarto, data_chegada, data_saida, num_hospedes, preco_total) VALUES
-    (default, '$id_cliente', '$id_quarto', '$data_chegada', '$data_saida', '$num_hospedes', '$preco_total')";
-    if ($conn->query($sql) === TRUE) {
-      //Atualiza o status do quarto para "ocupado"
-      $sql = "UPDATE reservas SET status = 'ocupado' WHERE id_quarto = '$id_quarto'";
-      if ($conn->query($sql) === TRUE) {
-      echo "Reserva efetuada com sucesso!";
-      } else {
-      echo "Erro ao atualizar o status do quarto: " . $conn->error;
+  if ($stmt = $conn->prepare($sql)) {
+      $stmt->bind_param("sss", $numero_quarto, $data_chegada, $data_saida);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      error_log($result->num_rows);
+      if ($result->num_rows == 0) {
+          $_SESSION["error"] = "Quarto reservado ou ocupado nesta data.";
+          header("Location: cria_reserva.php");
+          exit();
       }
+  } else {
+      error_log("Erro na preparação da consulta: " . $conn->error);
+  }
+
+  $row = $result->$stmt->get_result();
+  $id_quarto = $row["id"];
+  $preco_noite = $row["preco"];
+  $data_chegada_obj = new DateTime($data_chegada);
+  $data_saida_obj = new DateTime($data_saida);
+  $intervalo = $data_chegada_obj->diff($data_saida_obj);
+  $num_noites = $intervalo->days;
+  $preco_total = $num_noites * $preco_noite;
+
+  $id_cliente = $usuario['id'];
+  $sql = "INSERT INTO reservas (id_cliente, id_quarto, data_chegada, data_saida, num_hospedes, preco_total) VALUES
+  ('$id_cliente', '$id_quarto', '$data_chegada', '$data_saida', '$num_hospedes', '$preco_total')";
+  if ($conn->query($sql) === TRUE) {
+    $sql = "UPDATE reservas SET status = 'ocupado' WHERE id_quarto = '$id_quarto'";
+    if ($conn->query($sql) === TRUE) {
+      $_SESSION["success"] = "Reserva feita com sucesso.";
+      header("Location: cria_reserva.php");
+      exit();
     } else {
-    echo "Erro ao inserir a reserva: " . $conn->error;
+      error_log("Erro ao atualizar o status do quarto: " . $conn->error);
     }
   } else {
-    $_SESSION["error"] = "Quarto reservado ou ocupado nesta data.";
-    header("Location: cria_reserva.php");
-    exit();
+    error_log("Erro ao inserir a reserva: " . $conn->error);
   }
-  $_SESSION["success"] = "Reserva feita com sucesso.";
-  header("Location: cria_reserva.php");
-  exit();
 }
+$conn->close();
+
 ?>
 
 <?php include('components/navbar.php'); ?>

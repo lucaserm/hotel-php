@@ -31,7 +31,12 @@ $usuario = $resultado->fetch_assoc();
 
     //Recupera as reservas existentes
     $id_cliente = $usuario["id"];
-    $sql = "SELECT reservas.id, nome, data_chegada, data_saida, numero, preco_total 
+    $sql = "SELECT  reservas.id, 
+                    clientes.nome, 
+                    reservas.data_chegada, 
+                    reservas.data_saida, 
+                    quartos.numero, 
+                    reservas.preco_total 
             FROM reservas, clientes, quartos 
             WHERE id_cliente = '$id_cliente' 
             AND id_quarto = quartos.id 

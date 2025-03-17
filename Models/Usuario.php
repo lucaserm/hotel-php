@@ -13,7 +13,11 @@ class Usuario
     // Remove caracteres não numéricos
     $tel = preg_replace('/[^0-9]/', '', $tel);
     // Formata o número de telefone
-    return $tel = '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 5) . '-' . substr($tel, 7, 4);
+    $tel = '(' . substr($tel, 0, 2) . ') ' . substr($tel, 2, 5) . '-' . substr($tel, 7, 4);
+    // Logs
+    error_log("Inserting tel: Telefone: $tel");
+    error_log(print_r(['telefone' => $tel], true));
+    return $tel;
   }
   public function nomeCompleto($nome, $sobrenome)
   {
@@ -32,7 +36,7 @@ class Usuario
     $senha = $this->criptografia($senha);
     
     // Inserindo novo cliente no banco
-    $sql = "INSERT INTO clientes VALUES (default, '$nome', '$email', '$senha', '$tel')";
+    $sql = "INSERT INTO clientes (id, nome, email, senha, tel) VALUES (default, '$nome', '$email', '$senha', '$tel')";
     $resultado = $conn->query($sql);
 
     // Consulta o banco de dados para verificar as informações de login
