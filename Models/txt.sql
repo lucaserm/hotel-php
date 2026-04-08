@@ -3,8 +3,8 @@ CREATE TABLE clientes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255),
   email VARCHAR(255),
-  senha VARCHAR(255)
-  tel VARCHAR(20),
+  senha VARCHAR(255),
+  tel VARCHAR(20)
 );
 
 -- Criação da tabela quartos
@@ -32,6 +32,6 @@ CREATE TABLE reservas (
 );
 
 INSERT INTO reservas (id, id_cliente, id_quarto, data_chegada, data_saida, num_hospedes, preco_total) VALUES (default, 1, 1, NOW(), NOW(), 2, 99.9);
-DROP TABLE reservas;
-DROP TABLE quartos;
-DROP TABLE clientes;
+-- DROP TABLE reservas;
+-- DROP TABLE quartos;
+-- DROP TABLE clientes;

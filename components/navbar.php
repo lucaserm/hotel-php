@@ -1,80 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Openlab</title>
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-    integrity="sha512-3uDhfj3oM3Dud+ysN2+se+EYMHt3qJExTnIg9hej/KAHnbhxkEOlN8zjfZezm/vrYzFmHKTlkfejG9GP/gMkg=="
-    crossorigin="anonymous" />
+  <title>Openlab Hotel</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.php">Hotel Reservas</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<?php
+  require_once ROOT . '/includes/conexao.php';
+  $current = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+  function nav_active($path) {
+    global $current;
+    return $current === $path ? 'style="color:var(--cream)!important"' : '';
+  }
+?>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="/">OPENLAB <span>HOTEL</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse mr-3" id="navbarNav">
+    <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
-        <li class='nav-item'><span class='nav-link'>I</span></li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.php">Home</a>
-        </li>
-        <li class='nav-item'><span class='nav-link'>I</span></li>
-        <li class="nav-item">
-          <a class="nav-link" href="quartos_disponiveis.php">Quartos</a>
-        </li>
-        <li class='nav-item'><span class='nav-link'>I</span></li>
-        <li class="nav-item">
-          <a class="nav-link" href="busca_reserva.php">Minhas Reservas</a>
-        </li>
-        <li class='nav-item'><span class='nav-link'>I</span></li>
-        <li class="nav-item">
-          <a class="nav-link" href="cria_reserva.php">Reserve Aqui</a>
-        </li>
+        <li class="nav-item"><a class="nav-link" href="/" <?= nav_active('/') ?>>Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/quartos" <?= nav_active('/quartos') ?>>Quartos</a></li>
+        <li class="nav-item"><a class="nav-link" href="/reservas" <?= nav_active('/reservas') ?>>Minhas Reservas</a></li>
+        <li class="nav-item"><a class="nav-link" href="/reservas/nova" <?= nav_active('/reservas/nova') ?>>Reserve</a></li>
       </ul>
-      <?php
-      // Inclui a conexão com o banco de dados
-      include_once("./includes/conexao.php");
-
-      // Verifica se o usuário está autenticado
-      if (!isset($_SESSION["id_usuario"])) {
-        echo "
-        <ul class='navbar-nav'>
-          <li class='nav-item'>
-            <a class='nav-link' href='login.php'>Login</a>
-          </li>
-          <li class='nav-item'><span class='nav-link'>I</span></li>
-          <li class='nav-item'>
-            <a class='nav-link' href='signin.php'>Registrar</a>
-          </li>
+      <?php if (!isset($_SESSION["id_usuario"])): ?>
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/login">Entrar</a></li>
+          <li class="nav-item ml-2"><a class="btn btn-primary btn-sm" href="/register">Registrar</a></li>
         </ul>
-        ";
-      } else {
-        echo "
-        <ul class='navbar-nav'>
-          <li class='nav-item dropdown'>
-            <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" 
-            . $usuario["nome"]. 
-            "</a>
-            <div class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-              <a class='dropdown-item' href='perfil.php'>Perfil</a>
-              <div class='dropdown-divider'></div>
-              <a class='dropdown-item' href='logout.php'>Logout</a>
+      <?php else: ?>
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+              <i class="far fa-user-circle mr-1"></i> <?= htmlspecialchars($usuario["nome"] ?? '') ?>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href="/perfil"><i class="far fa-user fa-fw mr-2"></i>Perfil</a>
+              <a class="dropdown-item" href="/reservas"><i class="far fa-calendar fa-fw mr-2"></i>Reservas</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt fa-fw mr-2"></i>Sair</a>
             </div>
           </li>
         </ul>
-        ";
-      }
-      ?>
+      <?php endif; ?>
     </div>
   </nav>

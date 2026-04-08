@@ -50,7 +50,7 @@ class Usuario
       $_SESSION["nome_usuario"] = $row["nome"];
 
       // Redireciona para a página de destino do sistema
-      header("Location: ../index.php");
+      header("Location: /");
     }
   }
 
@@ -68,11 +68,11 @@ class Usuario
       $_SESSION["nome_usuario"] = $row["nome"];
 
       // Redireciona para a página de destino do sistema
-      header("Location: ../index.php");
+      header("Location: /");
     } else {
       // As informações de login estão incorretas, exibe mensagem de erro
       $_SESSION['error'] = "Usuário e/ou senha incorretos.";
-      header("Location: ../login.php");
+      header("Location: /login");
     }
   }
 
@@ -83,13 +83,13 @@ class Usuario
     // Atualizando o cliente no banco
     $sql = "
       UPDATE clientes 
-      SET nome = '$nome', email = '$email', telefone = '$tel'
+      SET nome = '$nome', email = '$email', tel = '$tel'
       WHERE id = '$id_usuario'";
     $resultado = $conn->query($sql);
 
     if ($resultado) {
       // Redireciona para a página de destino do sistema
-      header("Location: perfil.php");
+      header("Location: /perfil");
     }
   }
 }
